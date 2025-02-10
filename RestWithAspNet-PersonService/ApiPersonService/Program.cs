@@ -1,10 +1,14 @@
+using ApiPersonService.Data;
 using ApiPersonService.Services;
 using ApiPersonService.Services.Implementation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddDbContext<PersonDbContext>(options =>
+    options.UseSqlite("Data Source=meubanco.db"));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
