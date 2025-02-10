@@ -16,6 +16,8 @@ builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
 
 var app = builder.Build();
 
+CreateDatabase(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -26,3 +28,10 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.UseHttpsRedirection();
 app.Run();
+
+static void CreateDatabase(WebApplication app)
+{
+    var serviceScope = app.Services.CreateScope();
+    var dataContext = serviceScope.ServiceProvider.GetService<PersonDbContext>();
+    dataContext?.Database.EnsureCreated();
+}

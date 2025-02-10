@@ -1,57 +1,76 @@
+using ApiPersonService.Data;
 using ApiPersonService.Model;
 
 namespace ApiPersonService.Services.Implementation;
 
 public class PersonServiceImplementation : IPersonService
 {
-    public Person Create(Person person)
-    {
-        return person;
-    }
+    private PersonDbContext _context;
 
-    public void Delete(long id)
+    public PersonServiceImplementation(PersonDbContext context)
     {
-        
+        _context = context;
     }
 
     public List<Person> FindAll()
     {
-        List<Person> persons = new List<Person>();
-        for (int i = 0; i < 8; i++)
-        {
-            Person person = MockPerson(i);
-            persons.Add(person);
-        }
-        
-        return persons;
+        return _context.Persons.ToList();
     }
 
     public Person FindById(long id)
     {
-        return new Person
+        return _context.Persons.SingleOrDefault(p => p.Id == id)!;
+    }
+
+    public Person Create(Person person)
+    {
+        try
         {
-            Id = 1,
-            FirstName = "Samuel",
-            LastName = "Lucas",
-            Address = "Osasco - São Paulo - Brasil",
-            Gender = "Male"
-        };
+            _context.Add(person);
+            _context.SaveChanges();
+            return person;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     public Person Update(Person person)
     {
-        return person;
+        if (!Exists(person.Id)) return new Person();
+        var result = FindById(person.Id);
+
+        try
+        {
+            _context.Entry(result).CurrentValues.SetValues(person);
+            _context.SaveChanges();
+            return person;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
-    private Person MockPerson(int i)
+    public void Delete(long id)
     {
-        return new Person
+        var result = FindById(id);
+        if (result is null) return;
+
+        try
         {
-            Id = i,
-            FirstName = "Samuel",
-            LastName = "Lucas",
-            Address = "Osasco - São Paulo - Brasil",
-            Gender = "Male"
-        };
+            _context.Persons.Remove(result);
+            _context.SaveChanges();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    private bool Exists(long id)
+    {
+        return _context.Persons.Any(p => p.Id == id);
     }
 }
