@@ -1,13 +1,13 @@
 using ApiPersonService.Data;
 using ApiPersonService.Model;
 
-namespace ApiPersonService.Services.Implementation;
+namespace ApiPersonService.Repository.Implementations;
 
-public class PersonServiceImplementation : IPersonService
+public class PersonRepositoryImplementation : IPersonRepository
 {
     private PersonDbContext _context;
 
-    public PersonServiceImplementation(PersonDbContext context)
+    public PersonRepositoryImplementation(PersonDbContext context)
     {
         _context = context;
     }
@@ -38,9 +38,7 @@ public class PersonServiceImplementation : IPersonService
 
     public Person Update(Person person)
     {
-        if (!Exists(person.Id)) return new Person();
         var result = FindById(person.Id);
-
         try
         {
             _context.Entry(result).CurrentValues.SetValues(person);
@@ -56,8 +54,6 @@ public class PersonServiceImplementation : IPersonService
     public void Delete(long id)
     {
         var result = FindById(id);
-        if (result is null) return;
-
         try
         {
             _context.Persons.Remove(result);
@@ -69,7 +65,7 @@ public class PersonServiceImplementation : IPersonService
         }
     }
 
-    private bool Exists(long id)
+    public bool Exists(long id)
     {
         return _context.Persons.Any(p => p.Id == id);
     }

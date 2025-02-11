@@ -1,7 +1,9 @@
 using ApiPersonService.Data;
-using ApiPersonService.Services;
-using ApiPersonService.Services.Implementation;
+using ApiPersonService.Business;
+using ApiPersonService.Business.Implementation;
 using Microsoft.EntityFrameworkCore;
+using ApiPersonService.Repository;
+using ApiPersonService.Repository.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,8 @@ builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
+builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 
 var app = builder.Build();
 
