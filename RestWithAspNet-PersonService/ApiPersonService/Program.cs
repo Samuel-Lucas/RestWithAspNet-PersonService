@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PersonDbContext>(options =>
     options.UseSqlite("Data Source=PersonService.db"));
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPersonService, PersonServiceImplementation>();
