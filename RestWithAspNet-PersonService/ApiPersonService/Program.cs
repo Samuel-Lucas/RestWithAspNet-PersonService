@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddDbContext<PersonDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=PersonService.db"));
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning();
@@ -17,6 +17,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
 builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
 
 var app = builder.Build();
 
@@ -36,6 +38,6 @@ app.Run();
 static void CreateDatabase(WebApplication app)
 {
     var serviceScope = app.Services.CreateScope();
-    var dataContext = serviceScope.ServiceProvider.GetService<PersonDbContext>();
+    var dataContext = serviceScope.ServiceProvider.GetService<AppDbContext>();
     dataContext?.Database.EnsureCreated();
 }

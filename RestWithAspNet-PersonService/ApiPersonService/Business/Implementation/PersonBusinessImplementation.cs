@@ -1,4 +1,3 @@
-using ApiPersonService.Data;
 using ApiPersonService.Model;
 using ApiPersonService.Repository;
 
