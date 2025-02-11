@@ -2,8 +2,7 @@ using ApiPersonService.Data;
 using ApiPersonService.Business;
 using ApiPersonService.Business.Implementation;
 using Microsoft.EntityFrameworkCore;
-using ApiPersonService.Repository;
-using ApiPersonService.Repository.Implementations;
+using ApiPersonService.Repository.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +15,8 @@ builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-builder.Services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
 builder.Services.AddScoped<IBookBusiness, BookBusinessImplementation>();
-builder.Services.AddScoped<IBookRepository, BookRepositoryImplementation>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 

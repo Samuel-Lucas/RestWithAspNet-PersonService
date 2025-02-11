@@ -1,12 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using ApiPersonService.Model.Base;
 
 namespace ApiPersonService.Model;
 
 [Table("person")]
-public class Person
+public class Person : BaseEntity
 {
-    [Column("id")]
-    public long Id { get; set; }
     [Column("first_name")]
     public string FirstName { get; set; } = null!;
     [Column("last_name")]

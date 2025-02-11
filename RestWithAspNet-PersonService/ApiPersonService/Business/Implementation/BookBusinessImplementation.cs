@@ -1,13 +1,13 @@
 using ApiPersonService.Model;
-using ApiPersonService.Repository;
+using ApiPersonService.Repository.Generic;
 
 namespace ApiPersonService.Business.Implementation;
 
 public class BookBusinessImplementation : IBookBusiness
 {
-    private readonly IBookRepository _bookRepository;
+    private readonly IRepository<Book> _bookRepository;
 
-    public BookBusinessImplementation(IBookRepository bookRepository)
+    public BookBusinessImplementation(IRepository<Book> bookRepository)
     {
         _bookRepository = bookRepository;
     }
