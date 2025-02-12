@@ -2,6 +2,7 @@ using ApiPersonService.Model;
 using ApiPersonService.Business;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using ApiPersonService.Data.VO;
 
 namespace ApiPersonService.Controllers;
 
@@ -34,14 +35,14 @@ public class PersonController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Person person)
+    public IActionResult Post([FromBody] PersonVO person)
     {
         if (person is null) return BadRequest();
         return Ok(_personService.Create(person));
     }
 
     [HttpPut]
-    public IActionResult Put([FromBody] Person person)
+    public IActionResult Put([FromBody] PersonVO person)
     {
         if (person is null) return BadRequest();
         return Ok(_personService.Update(person));

@@ -1,4 +1,5 @@
 using ApiPersonService.Business;
+using ApiPersonService.Data.VO;
 using ApiPersonService.Model;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +35,14 @@ public class BookController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Post([FromBody] Book book)
+    public IActionResult Post([FromBody] BookVO book)
     {
         if (book is null) return BadRequest();
         return Ok(_bookService.Create(book));
     }
 
     [HttpPut]
-    public IActionResult Put([FromBody] Book book)
+    public IActionResult Put([FromBody] BookVO book)
     {
         if (book is null) return BadRequest();
         return Ok(_bookService.Update(book));

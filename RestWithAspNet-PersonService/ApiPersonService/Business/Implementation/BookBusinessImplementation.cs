@@ -1,3 +1,5 @@
+using ApiPersonService.Data.Converter.Implementation;
+using ApiPersonService.Data.VO;
 using ApiPersonService.Model;
 using ApiPersonService.Repository.Generic;
 
@@ -6,33 +8,39 @@ namespace ApiPersonService.Business.Implementation;
 public class BookBusinessImplementation : IBookBusiness
 {
     private readonly IRepository<Book> _bookRepository;
+    private readonly BookConverter _converter;
 
     public BookBusinessImplementation(IRepository<Book> bookRepository)
     {
         _bookRepository = bookRepository;
+        _converter = new BookConverter();
     }
 
-    public List<Book> FindAll()
+    public List<BookVO> FindAll()
     {
-        return _bookRepository.FindAll();
+        return _converter.Parse(_bookRepository.FindAll());
     }
 
-    public Book FindById(long id)
+    public BookVO FindById(long id)
     {
-        return _bookRepository.FindById(id);
+        return _converter.Parse(_bookRepository.FindById(id));
     }
 
-    public Book Create(Book book)
+    public BookVO Create(BookVO book)
     {
-        return _bookRepository.Create(book);
+        var bookEntity = _converter.Parse(book);
+        bookEntity = _bookRepository.Create(bookEntity);
+        return _converter.Parse(bookEntity);
     }
 
-    public Book Update(Book book)
+    public BookVO Update(BookVO book)
     {
         if (!_bookRepository.Exists(book.Id))
-            return new Book();
+            return new BookVO();
 
-        return _bookRepository.Update(book);
+        var bookEntity = _converter.Parse(book);
+        bookEntity = _bookRepository.Update(bookEntity);
+        return _converter.Parse(bookEntity);
     }
 
     public void Delete(long id)
