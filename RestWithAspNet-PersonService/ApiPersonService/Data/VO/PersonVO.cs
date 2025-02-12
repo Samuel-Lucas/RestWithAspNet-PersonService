@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ApiPersonService.Data.VO;
 
 public class PersonVO
