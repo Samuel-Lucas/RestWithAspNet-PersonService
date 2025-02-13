@@ -12,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=PersonService.db"));
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 var filterOptions = new HyperMediaFilterOptions();
 filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
 filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
@@ -40,6 +40,15 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=ApiVersion}/{id?}");
 app.UseHttpsRedirection();
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+}));
+
 app.Run();
 
 static void CreateDatabase(WebApplication app)
