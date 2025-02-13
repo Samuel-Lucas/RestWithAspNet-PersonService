@@ -1,6 +1,6 @@
 using ApiPersonService.Business;
 using ApiPersonService.Data.VO;
-using ApiPersonService.Model;
+using ApiPersonService.Hypermedia.Filters;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,12 +21,14 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         return Ok(_bookService.FindAll());
     }
 
     [HttpGet("{id}")]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get(long id)
     {
         var book = _bookService.FindById(id);
@@ -35,6 +37,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPost]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] BookVO book)
     {
         if (book is null) return BadRequest();
@@ -42,6 +45,7 @@ public class BookController : ControllerBase
     }
 
     [HttpPut]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] BookVO book)
     {
         if (book is null) return BadRequest();

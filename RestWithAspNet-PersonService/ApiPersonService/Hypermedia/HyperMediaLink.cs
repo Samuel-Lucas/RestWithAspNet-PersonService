@@ -4,8 +4,8 @@ namespace ApiPersonService.Hypermedia;
 
 public class HyperMediaLink
 {
-    public string Rel { get; set; }
-    private string href;
+    public string? Rel { get; set; }
+    private string? href;
     public string Href
     { 
         get
@@ -22,6 +22,6 @@ public class HyperMediaLink
             href = value; 
         }
     }
-    public string Type { get; set; }
-    public string Action { get; set; }
+    public string? Type { get; set; }
+    public string? Action { get; set; }
 }

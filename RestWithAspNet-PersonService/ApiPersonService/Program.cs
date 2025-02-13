@@ -3,6 +3,8 @@ using ApiPersonService.Business;
 using ApiPersonService.Business.Implementation;
 using Microsoft.EntityFrameworkCore;
 using ApiPersonService.Repository.Generic;
+using ApiPersonService.Hypermedia.Filters;
+using ApiPersonService.Hypermedia.Enricher;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=PersonService.db"));
 builder.Services.AddControllers();
+
+var filterOptions = new HyperMediaFilterOptions();
+filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+builder.Services.AddSingleton(filterOptions);
 builder.Services.AddApiVersioning();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,6 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=ApiVersion}/{id?}");
 app.UseHttpsRedirection();
 app.Run();
 

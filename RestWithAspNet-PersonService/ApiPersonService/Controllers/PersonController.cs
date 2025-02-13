@@ -1,8 +1,8 @@
-using ApiPersonService.Model;
 using ApiPersonService.Business;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using ApiPersonService.Data.VO;
+using ApiPersonService.Hypermedia.Filters;
 
 namespace ApiPersonService.Controllers;
 
@@ -21,12 +21,14 @@ public class PersonController : ControllerBase
     }
 
     [HttpGet]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         return Ok(_personService.FindAll());
     }
 
     [HttpGet("{id}")]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get(long id)
     {
         var person = _personService.FindById(id);
@@ -35,6 +37,7 @@ public class PersonController : ControllerBase
     }
 
     [HttpPost]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] PersonVO person)
     {
         if (person is null) return BadRequest();
@@ -42,6 +45,7 @@ public class PersonController : ControllerBase
     }
 
     [HttpPut]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] PersonVO person)
     {
         if (person is null) return BadRequest();

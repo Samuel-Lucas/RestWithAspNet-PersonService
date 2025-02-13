@@ -1,12 +1,14 @@
-using System.Text.Json.Serialization;
+using ApiPersonService.Hypermedia;
+using ApiPersonService.Hypermedia.Abstract;
 
 namespace ApiPersonService.Data.VO;
 
-public class PersonVO
+public class PersonVO : ISupportHypermedia
 {
     public long Id { get; set; }
     public string FirstName { get; set; } = null!;
     public string LastName { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string Gender { get; set; } = null!;
+    public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }
