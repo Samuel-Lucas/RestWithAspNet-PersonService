@@ -21,13 +21,14 @@ public class TokenService : ITokenService
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.Secret));
         var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-        var options = new JwtSecurityToken(
+        var options = new JwtSecurityToken
+        (
             issuer: _configuration.Issuer,
             audience: _configuration.Audience,
             claims: claims,
             expires: DateTime.Now.AddMinutes(_configuration.Minutes),
             signingCredentials: signingCredentials
-            );
+        );
 
         return new JwtSecurityTokenHandler().WriteToken(options);
     }
