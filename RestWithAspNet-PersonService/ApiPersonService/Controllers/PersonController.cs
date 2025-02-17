@@ -3,11 +3,13 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using ApiPersonService.Data.VO;
 using ApiPersonService.Hypermedia.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiPersonService.Controllers;
 
 [ApiVersion("1")]
 [ApiController]
+[Authorize("Bearer")]
 [Route("api/[controller]/v{version:apiVersion}")]
 public class PersonController : ControllerBase
 {
