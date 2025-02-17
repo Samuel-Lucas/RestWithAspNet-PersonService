@@ -7,14 +7,14 @@ using ApiPersonService.Services;
 
 namespace ApiPersonService.Business.Implementation;
 
-public class LoginBusiness : ILoginBusiness
+public class LoginBusinessImplementation : ILoginBusiness
 {
     private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private TokenConfiguration _configuration;
     private IUserRepository _userRepository;
     private readonly ITokenService _tokenService;
 
-    public LoginBusiness(TokenConfiguration configuration, IUserRepository userRepository, ITokenService tokenService)
+    public LoginBusinessImplementation(TokenConfiguration configuration, IUserRepository userRepository, ITokenService tokenService)
     {
         _configuration = configuration;
         _userRepository = userRepository;
@@ -38,6 +38,8 @@ public class LoginBusiness : ILoginBusiness
 
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpire = DateTime.Now.AddDays(_configuration.DaysToExpire);
+
+        _userRepository.RefreshUserInfo(user);
 
         DateTime createDate = DateTime.Now;
         DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
