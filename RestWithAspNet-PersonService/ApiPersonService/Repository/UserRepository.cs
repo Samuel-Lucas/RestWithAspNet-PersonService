@@ -18,7 +18,8 @@ public class UserRepository : IUserRepository
     public User ValidateCredentials(UserVO user)
     {
         var pass = ComputeHash(user.Password, SHA256.Create());
-        return _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == pass))!;
+        var userRetrieved = _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == pass))!;
+        return userRetrieved;
     }
 
     public User RefreshUserInfo(User user)

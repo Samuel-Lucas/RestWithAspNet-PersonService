@@ -38,21 +38,6 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
-var app = builder.Build();
-
-CreateDatabase(app);
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=ApiVersion}/{id?}");
-app.UseHttpsRedirection();
-
 var tokenConfigurations = new TokenConfiguration();
 
 new ConfigureFromConfigurationOptions<TokenConfiguration>(
@@ -93,6 +78,21 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
         .AllowAnyMethod()
         .AllowAnyHeader();
 }));
+
+var app = builder.Build();
+
+CreateDatabase(app);
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=ApiVersion}/{id?}");
+app.UseHttpsRedirection();
 
 app.Run();
 
