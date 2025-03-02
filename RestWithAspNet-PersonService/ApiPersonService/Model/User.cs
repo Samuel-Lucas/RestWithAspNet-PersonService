@@ -23,5 +23,5 @@ public class User
     public string RefreshToken { get; set; } = null!;
 
     [Column("refresh_token_expire")]
-    public DateTime RefreshTokenExpire { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }

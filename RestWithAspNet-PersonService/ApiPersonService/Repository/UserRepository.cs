@@ -22,6 +22,11 @@ public class UserRepository : IUserRepository
         return userRetrieved;
     }
 
+    public User ValidateCredentials(string userName)
+    {
+        return _context.Users.SingleOrDefault(u => u.UserName == userName)!;
+    }
+
     public User RefreshUserInfo(User user)
     {
         if (!_context.Users.Any(u => u.Id == user.Id)) return null!;

@@ -37,7 +37,42 @@ public class LoginBusinessImplementation : ILoginBusiness
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpire = DateTime.Now.AddDays(_configuration.DaysToExpire);
+        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
+
+        _userRepository.RefreshUserInfo(user);
+
+        DateTime createDate = DateTime.Now;
+        DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+        return new TokenVO
+        (
+            true,
+            createDate.ToString(DATE_FORMAT),
+            expirationDate.ToString(DATE_FORMAT),
+            accessToken,
+            refreshToken
+        );
+    }
+
+    public TokenVO ValidateCredentials(TokenVO token)
+    {
+        var accessToken = token.AccessToken;
+        var refreshToken = token.RefreshToken;
+
+        var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
+        var userName = principal.Identity!.Name;
+
+        var user = _userRepository.ValidateCredentials(userName!);
+
+        if (user is null ||
+            user.RefreshToken != refreshToken || 
+            user.RefreshTokenExpiryTime <= DateTime.Now)
+            return null!;
+
+        accessToken = _tokenService.GenerateAccessToken(principal.Claims);
+        refreshToken = _tokenService.GenerateRefreshToken();
+
+        user.RefreshToken = refreshToken;
 
         _userRepository.RefreshUserInfo(user);
 
