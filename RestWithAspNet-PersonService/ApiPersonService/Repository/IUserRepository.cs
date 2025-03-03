@@ -8,4 +8,5 @@ public interface IUserRepository
     User ValidateCredentials(UserVO user);
     User ValidateCredentials(string userName);
     public User RefreshUserInfo(User user);
+    public bool RevokeToken(string userName);
 }

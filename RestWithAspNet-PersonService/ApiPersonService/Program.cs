@@ -90,6 +90,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{controller=values}/v{version=ApiVersion}/{id?}");
 app.UseHttpsRedirection();

@@ -1,6 +1,7 @@
 using ApiPersonService.Business;
 using ApiPersonService.Data.VO;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiPersonService.Controllers;
@@ -41,5 +42,18 @@ public class AuthController : ControllerBase
         if (token is null) return BadRequest("Invalid client request");
 
         return Ok(token);
+    }
+
+    [HttpGet]
+    [Route("revoke")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public IActionResult Revoke()
+    {
+        var userName = User.Identity!.Name;
+        var result = _loginBusiness.RevokeToken(userName!);
+
+        if (!result) return BadRequest("Invalid client request");
+
+        return NoContent();
     }
 }

@@ -88,4 +88,7 @@ public class LoginBusinessImplementation : ILoginBusiness
             refreshToken
         );
     }
+
+    public bool RevokeToken(string userName)
+        => _userRepository.RevokeToken(userName);
 }
