@@ -14,4 +14,6 @@ public class Person : BaseEntity
     public string Address { get; set; } = null!;
     [Column("gender")]
     public string Gender { get; set; } = null!;
+    [Column("enabled")]
+    public bool Enabled { get; set; }
 }
