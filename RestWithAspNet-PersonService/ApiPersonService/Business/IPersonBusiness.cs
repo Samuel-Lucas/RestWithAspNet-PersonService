@@ -8,5 +8,6 @@ public interface IPersonBusiness
     PersonVO FindById(long id);
     List<PersonVO> FindAll();
     PersonVO Update(PersonVO person);
+    Task<PersonVO> DisableAsync(long id);
     void Delete(long id);
 }

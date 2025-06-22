@@ -1,16 +1,17 @@
 using ApiPersonService.Data.Converter.Implementation;
 using ApiPersonService.Data.VO;
 using ApiPersonService.Model;
+using ApiPersonService.Repository;
 using ApiPersonService.Repository.Generic;
 
 namespace ApiPersonService.Business.Implementation;
 
 public class PersonBusinessImplementation : IPersonBusiness
 {
-    private readonly IRepository<Person> _personRepository;
+    private readonly IPersonRepository _personRepository;
     private readonly PersonConverter _converter;
 
-    public PersonBusinessImplementation(IRepository<Person> personRepository)
+    public PersonBusinessImplementation(IPersonRepository personRepository)
     {
         _personRepository = personRepository;
         _converter = new PersonConverter();
@@ -40,6 +41,12 @@ public class PersonBusinessImplementation : IPersonBusiness
 
         var personEntity = _converter.Parse(person);
         personEntity = _personRepository.Update(personEntity);
+        return _converter.Parse(personEntity);
+    }
+
+    public async Task<PersonVO> DisableAsync(long id)
+    {
+        var personEntity = await _personRepository.DisableAsync(id);
         return _converter.Parse(personEntity);
     }
 
