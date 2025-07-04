@@ -27,6 +27,11 @@ public class PersonBusinessImplementation : IPersonBusiness
         return _converter.Parse(_personRepository.FindById(id));
     }
 
+    public List<PersonVO> FindByName(string firstName, string lastName)
+    {
+        return _converter.Parse(_personRepository.FindByName(firstName, lastName));
+    }
+
     public PersonVO Create(PersonVO person)
     {
         var personEntity = _converter.Parse(person);
