@@ -52,9 +52,9 @@ public class PersonController : ControllerBase
     [ProducesResponseType((400))]
     [ProducesResponseType((401))]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Get([FromQuery] string firstName, [FromQuery] string lastName)
+    public IActionResult Get([FromQuery] string? firstName, [FromQuery] string? lastName)
     {
-        var person = _personService.FindByName(firstName, lastName);
+        var person = _personService.FindByName(firstName!, lastName!);
         if (person is null) return NotFound();
         return Ok(person);
     }
