@@ -23,26 +23,25 @@ public class PersonBusinessImplementation : IPersonBusiness
 
     public PagedSearchVO<PersonVO> FindWithPagedSearch(string name, string sortDirection, int pageSize, int page)
     {
-        var offset = page > 0 ? (page - 1) * pageSize : 0;
         var sort = (!string.IsNullOrWhiteSpace(sortDirection) && !sortDirection.Equals("desc")) ? "asc" : "desc";
-        var size = (pageSize < 1) ? 1 : pageSize;
+        var size = (pageSize < 1) ? 10 : pageSize;
+        var offset = page > 0 ? (page - 1) * size : 0;
 
-        string query = @"select
-                    from
-                        Person p
-                    where 1 = 1
-                        and p.name like '%LEO%'
-                    order by
-                        p.name asc limit 10 offset 1;";
+        string paginationQuery = "select * from person p where 1 = 1";
+        string countQuery = "select count(*) from person p where 1 = 1;";
 
-        string countQuery = "";
+        if (!string.IsNullOrWhiteSpace(name))
+            paginationQuery = paginationQuery + $" and p.first_name like '%{name}%'";
+            countQuery = countQuery + $" and p.first_name like '%{name}%'";
 
-        var persons = _personRepository.FindWithPagedSearch(query);
+        paginationQuery += $" order by p.first_name {sort} limit {size} offset {offset};";
+
+        var persons = _personRepository.FindWithPagedSearch(paginationQuery);
         int totalResults = _personRepository.GetCount(countQuery);
 
         return new PagedSearchVO<PersonVO>
         {
-            CurrentPage = offset,
+            CurrentPage = page,
             List = _converter.Parse(persons),
             PageSize = size,
             SortDirections = sort,
