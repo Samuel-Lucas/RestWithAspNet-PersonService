@@ -2,12 +2,12 @@ using ApiPersonService.Data.VO;
 
 namespace ApiPersonService.Business.Implementation;
 
-public class FileBusiness : IFileBusiness
+public class FileBusinessImplementation : IFileBusiness
 {
     private readonly string _basePath;
     private readonly IHttpContextAccessor _context;
 
-    public FileBusiness(IHttpContextAccessor context)
+    public FileBusinessImplementation(IHttpContextAccessor context)
     {
         _context = context;
         _basePath = Directory.GetCurrentDirectory() + "\\UploadDir\\";
@@ -18,7 +18,7 @@ public class FileBusiness : IFileBusiness
         throw new NotImplementedException();
     }
     
-    public async Task<FileDetailVO> SaveFileToDisk(IFormFile file)
+    public async Task<FileDetailVO> SaveFileToDiskAsync(IFormFile file)
     {
         var fileDetail = new FileDetailVO();
         var fileType = Path.GetExtension(file.FileName);
@@ -46,6 +46,6 @@ public class FileBusiness : IFileBusiness
 
     public async Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> file)
     {
-
+        return default!;
     }
 }
