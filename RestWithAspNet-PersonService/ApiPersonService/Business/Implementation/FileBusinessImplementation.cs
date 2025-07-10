@@ -44,8 +44,15 @@ public class FileBusinessImplementation : IFileBusiness
         return fileDetail;
     }
 
-    public async Task<List<FileDetailVO>> SaveFilesToDisk(IList<IFormFile> file)
+    public async Task<List<FileDetailVO>> SaveFilesToDiskAsync(IList<IFormFile> files)
     {
-        return default!;
+        var fileList = new List<FileDetailVO>();
+
+        foreach (var file in files)
+        {
+            fileList.Add(await SaveFileToDiskAsync(file));
+        }
+
+        return fileList;
     }
 }

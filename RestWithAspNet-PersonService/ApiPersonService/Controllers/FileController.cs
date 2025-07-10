@@ -31,4 +31,15 @@ public class FileController : Controller
         var detail = await _fileBusiness.SaveFileToDiskAsync(file);
         return Ok(detail);
     }
+
+    [HttpPost("UpLoadMultipleFile")]
+    [ProducesResponseType((200), Type = typeof(List<FileDetailVO>))]
+    [ProducesResponseType((400))]
+    [ProducesResponseType((401))]
+    [Produces("application/json")]
+    public async Task<IActionResult> UploadManyFiles([FromForm] List<IFormFile> files)
+    {
+        var details = await _fileBusiness.SaveFilesToDiskAsync(files);
+        return Ok(details);
+    }
 }
